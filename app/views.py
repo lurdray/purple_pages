@@ -141,3 +141,30 @@ def Reset(request):
         except:
             data = {"detail": "Reset not successful", "status_lean": False}
             return Response(data)
+
+
+@api_view(['POST'])
+def Edit(request):
+    if request.method == 'POST':
+
+        auth_code =request.data["auth_code"]
+
+        first_name =request.data["first_name"]
+        last_name =request.data["last_name"]
+        phone =request.data["phone"]
+
+        try:
+            app_user = App.objects.get(auth_code=auth_code)
+            app_user.first_name = first_name
+            app_user.last_name = last_name
+            app_user.phone = phone
+            app_user.save()
+
+
+            data = {"detail": "Profile Update Successful", "status_lean": True, "auth_code": auth_code}
+            return Response(data)
+
+        except:
+
+            data = {"detail": "Error!!", "status_lean": False}
+            return Response(data)
